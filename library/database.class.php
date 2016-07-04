@@ -26,54 +26,54 @@ class Database
         }
     }
     
-    public function SELECT($select)
+    public function select($select)
     {
         $this->select = $select;
         $this->action = "select";
     }
     
-    public function FROM($from)
+    public function from($from)
     {
         $this->from = $from;
     }
     
-    public function WHERE($where)
+    public function where($where)
     {
         $this->where = $where; 
     }
     
-    public function LIMIT($limit)
+    public function limit($limit)
     {
         $this->limit = $limit;
     }
     
-    public function ORDER_BY($order_by, $desc)
+    public function order_by($order_by, $desc)
     {
         $this->order_by = $order_by;
         $this->desc = $desc;
     }
     
-    public function UPDATE($tableName, $data = array())
+    public function update($tableName, $data = array())
     {
         $this->action = "update";
         $this->from = $tableName;
         $this->data = $data;
     }
     
-    public function DELETE($tableName)
+    public function delete($tableName)
     {
         $this->action = "delete";
         $this->from = $tableName;
     }
     
-    public function INSERT($tableName, $data = array())
+    public function insert($tableName, $data = array())
     {
         $this->action = "insert";
         $this->from = $tableName;
         $this->data = $data;
     }
     
-    public function JOIN($tableJoin, $joinCondition)
+    public function join($tableJoin, $joinCondition)
     {
         $this->join[$tableJoin] = $joinCondition;
     }
