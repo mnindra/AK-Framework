@@ -52,7 +52,7 @@ class Eloquent extends Model {
     }
 
     $this->db->where($condition);
-    return $this->db->execute()->row();
+    return $this->db->execute()->result();
   }
 
   public function create($data) {
