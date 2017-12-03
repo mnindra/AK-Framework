@@ -6,42 +6,56 @@ class Eloquent extends Model {
   protected $primaryKey = "";
   protected $fillable = [];
 
-  protected function all($join = []) {
+  public function all($join = []) {
+
     $this->db->select("*");
+
     $this->db->from($this->tableName);
 
     foreach ($join as $item) {
-      $this->db->join($item['table'], $item['condition']);
+      $tableOrigin = array_key_exists('tableOrigin', $item) ? $item['tableOrigin'] : $this->tableName;
+      $this->db->join(
+        $item['table'],
+        "$tableOrigin.$item[field] = $item[table].$item[field]"
+      );
     }
 
     return $this->db->execute()->result();
   }
 
-  protected function find($id, $join = []) {
+  public function find($id, $join = []) {
     $this->db->select("*");
     $this->db->from($this->tableName);
 
     foreach ($join as $item) {
-      $this->db->join($item['table'], $item['condition']);
+      $tableOrigin = array_key_exists('tableOrigin', $item) ? $item['tableOrigin'] : $this->tableName;
+      $this->db->join(
+        $item['table'],
+        "$tableOrigin.$item[field] = $item[table].$item[field]"
+      );
     }
 
     $this->db->where($this->primaryKey . ' = ' . $id);
     return $this->db->execute()->row();
   }
 
-  protected function where($condition, $join = []) {
+  public function where($condition, $join = []) {
     $this->db->select("*");
     $this->db->from($this->tableName);
 
     foreach ($join as $item) {
-      $this->db->join($item['table'], $item['condition']);
+      $tableOrigin = array_key_exists('tableOrigin', $item) ? $item['tableOrigin'] : $this->tableName;
+      $this->db->join(
+        $item['table'],
+        "$tableOrigin.$item[field] = $item[table].$item[field]"
+      );
     }
 
     $this->db->where($condition);
     return $this->db->execute()->row();
   }
 
-  protected function create($data) {
+  public function create($data) {
     $insert_data = [];
     foreach ($this->fillable as $item) {
       $insert_data[$item] = $data[$item];
@@ -51,7 +65,7 @@ class Eloquent extends Model {
     $this->db->execute();
   }
 
-  protected function update($data, $id) {
+  public function update($data, $id) {
     $update_data = [];
     foreach ($this->fillable as $item) {
       $update_data[$item] = $data[$item];
@@ -62,7 +76,7 @@ class Eloquent extends Model {
     $this->db->execute();
   }
 
-  protected function destroy($id) {
+  public function destroy($id) {
     $this->db->delete($this->tableName);
     $this->db->where($this->primaryKey . ' = ' . $id);
     $this->db->execute();
